@@ -1,42 +1,37 @@
-version: '3.8'
-
 services:
   app:
     build:
       context: .
-      dockerfile: php/Dockerfile
+      dockerfile: docker/php/Dockerfile
     volumes:
       - ./:/var/www/html
     networks:
       - laravel
     environment:
         - PHP_IDE_CONFIG=serverName=docker
-        - XDEBUG_CONFIG="idekey=PHPSTORM"
-    extra_hosts:
-        - host.docker.internal:host-gateway
+#        - XDEBUG_CONFIG="idekey=PHPSTORM"
   nginx:
     image: nginx:alpine
     ports:
       - "8000:80"
     volumes:
       - ./:/var/www/html
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - laravel
 
   postgres:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: laravel
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: laravel
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      - laravel
-
+      image: postgres:latest
+      ports:
+          - "5432:5432"
+      environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: rootpass
+      volumes:
+          - pgdata:/var/lib/postgresql/data
+          - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      networks:
+          - laravel
 networks:
   laravel:
 

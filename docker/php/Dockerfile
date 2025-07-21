@@ -15,8 +15,8 @@ RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
 # Копирование конфигов PHP и Xdebug
-COPY php/php.ini /usr/local/etc/php/php.ini
-COPY php/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+COPY docker/php/php.ini /usr/local/etc/php/php.ini
+COPY docker/php/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Установка рабочего каталога
