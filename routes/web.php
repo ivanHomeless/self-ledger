@@ -11,3 +11,12 @@ Route::get('/test-debug', function() {
     xdebug_break(); // Точка останова
     return response()->json(['status' => 'success', 'message' => $message]);
 });
+
+Route::get('/db-test', function () {
+    try {
+        DB::connection()->getPdo();
+        return '✅ Database connection is OK!';
+    } catch (\Exception $e) {
+        return '❌ Database connection failed: ' . $e->getMessage();
+    }
+});

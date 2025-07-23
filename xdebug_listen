@@ -1,0 +1,32 @@
+#!/bin/bash
+
+PORT=9004
+PID_FILE=~/.xdebug_socat.pid
+WSL_HOST_IP=$(grep -m1 nameserver /etc/resolv.conf | awk '{print $2}')
+
+case "$1" in
+  start)
+    if [ -f "$PID_FILE" ] && kill -0 "$(cat $PID_FILE)" 2>/dev/null; then
+      echo "⚠️ Socat уже запущен с PID $(cat $PID_FILE)"
+      exit 0
+    fi
+    echo "🚀 Запускаю socat на порту $PORT..."
+    socat TCP-LISTEN:$PORT,fork TCP:$WSL_HOST_IP:$PORT & echo $! > "$PID_FILE"
+    echo "✅ Socat запущен (PID $(cat $PID_FILE))"
+    ;;
+
+  stop)
+    if [ ! -f "$PID_FILE" ]; then
+      echo "⚠️ PID-файл не найден. Socat, возможно, не запущен."
+      exit 1
+    fi
+    PID=$(cat "$PID_FILE")
+    echo "⛔ Останавливаю socat (PID $PID)..."
+    kill $PID && rm "$PID_FILE" && echo "✅ Остановлено." || echo "❌ Не удалось завершить socat."
+    ;;
+
+  *)
+    echo "❓ Использование: $0 {start|stop}"
+    exit 1
+    ;;
+esac
