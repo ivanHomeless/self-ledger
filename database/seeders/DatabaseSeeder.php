@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Client;
+use App\Models\ClientFollowUp;
 use App\Models\FileAttachment;
 use App\Models\Finance;
 use App\Models\Note;
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
         Reminder::factory(10)->create();
         Note::factory(10)->create();
         FileAttachment::factory(2)->create();
+        ClientFollowUp::factory(2)->create();
     }
 
     protected function clearUploadFiles(): void
