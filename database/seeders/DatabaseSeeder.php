@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AccessCredential;
 use App\Models\Client;
 use App\Models\ClientFollowUp;
 use App\Models\FileAttachment;
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
         Note::factory(10)->create();
         FileAttachment::factory(2)->create();
         ClientFollowUp::factory(2)->create();
+        AccessCredential::factory(10)->create();
     }
 
     protected function clearUploadFiles(): void
