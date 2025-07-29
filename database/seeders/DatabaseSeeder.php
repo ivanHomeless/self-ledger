@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Client;
 use App\Models\Finance;
+use App\Models\Note;
 use App\Models\Project;
+use App\Models\Reminder;
 use App\Models\Task;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,5 +24,7 @@ class DatabaseSeeder extends Seeder
         Project::factory(10)->create();
         Task::factory(10)->create();
         Finance::factory(10)->create();
+        Reminder::factory(10)->create();
+        Note::factory(10)->create();
     }
 }
