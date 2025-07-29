@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Client;
+use App\Models\FileAttachment;
 use App\Models\Finance;
 use App\Models\Note;
 use App\Models\Project;
@@ -11,6 +12,7 @@ use App\Models\Task;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +21,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->clearUploadFiles();
+
         User::factory(10)->create();
         Client::factory(10)->create();
         Project::factory(10)->create();
@@ -26,5 +30,15 @@ class DatabaseSeeder extends Seeder
         Finance::factory(10)->create();
         Reminder::factory(10)->create();
         Note::factory(10)->create();
+        FileAttachment::factory(2)->create();
+    }
+
+    protected function clearUploadFiles(): void
+    {
+        // Удаляем все файлы и папки внутри storage/app/public/uploads
+        Storage::disk('public')->deleteDirectory('uploads');
+
+        // Создаем пустую папку заново (на всякий случай)
+        Storage::disk('public')->makeDirectory('uploads');
     }
 }
